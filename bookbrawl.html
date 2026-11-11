@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
 <title>Book Brawl</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,125 +17,121 @@
   font-weight:400; font-style:normal; font-display:block;
 }
 :root{
-  --bg:#efe7d6; --surface:#e5dac2; --text:#2b211a; --muted:#6e604f;
-  --rule:#c6b696; --accent:#7a2630; --brass:#8a6a35;
+  --bg:#000; --card:#0c0c0e; --text:#fff; --muted:#a9a9b0; --rule:#26262b; --track:#1c1c21;
+  --topaz:#ffc94a; --emerald:#2fd896; --sapphire:#4fa3ff; --ruby:#ff5470; --amethyst:#bb8dff; --aqua:#3fdde0;
   --display:"Engravers Old English", "UnifrakturMaguntia", "Old English Text MT", serif;
-  color-scheme: light;
+  color-scheme: dark;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#17120f; --surface:#211913; --text:#e8dcc4; --muted:#a3947d;
-    --rule:#3b2f25; --accent:#b24a55; --brass:#b8955c;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#17120f; --surface:#211913; --text:#e8dcc4; --muted:#a3947d;
-  --rule:#3b2f25; --accent:#b24a55; --brass:#b8955c;
-  color-scheme: dark;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{
   margin:0; background:var(--bg); color:var(--text);
   font-family:"IM Fell English", "Iowan Old Style", Georgia, serif;
-  font-size:1.2rem; line-height:1.5;
+  font-size:1.2rem; line-height:1.4;
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:76rem; margin:0 auto; padding:3rem 3rem 5rem}
+.wrap{padding:2rem 1.25rem 4rem}
 .display{font-family:var(--display); font-weight:400}
-.sc{font-family:"IM Fell English SC", "IM Fell English", Georgia, serif}
+.num{font-variant-numeric:lining-nums tabular-nums}
 
-/* Masthead: title left, tabs right, one rule beneath */
-header{display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; padding-bottom:1rem; border-bottom:1px solid var(--rule); position:relative}
-header::after{content:""; position:absolute; left:0; right:0; bottom:-5px; border-bottom:1px solid var(--rule)}
-h1{font-size:clamp(3.25rem, 6.5vw, 5.5rem); line-height:.95; margin:0}
-
-nav{display:flex; gap:2.25rem; padding-bottom:.35rem}
+header{display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem 3rem; flex-wrap:wrap; padding-bottom:1rem; border-bottom:1px solid var(--rule)}
+h1{font-size:clamp(3rem, 8vw, 6rem); line-height:.95; margin:0}
+nav{display:flex; flex-wrap:wrap; justify-content:flex-end; gap:.4rem 1.9rem; padding-bottom:.3rem}
 nav button{
-  font:inherit; font-family:"IM Fell English SC", Georgia, serif; font-size:1.3rem;
-  background:none; border:0; padding:.25rem 0; color:var(--muted); cursor:pointer;
-  border-bottom:2px solid transparent;
+  font:inherit; font-family:"IM Fell English SC", Georgia, serif; font-size:1.2rem;
+  background:none; border:0; padding:.2rem 0; color:var(--muted); cursor:pointer;
+  border-bottom:2px solid transparent; white-space:nowrap;
 }
 nav button:hover{color:var(--text)}
-nav button[aria-selected="true"]{color:var(--text); border-bottom-color:var(--accent)}
-button:focus-visible{outline:2px solid var(--brass); outline-offset:4px}
+nav button[aria-selected="true"]{color:var(--text); border-bottom-color:var(--ruby)}
+nav .sep{width:1px; align-self:stretch; background:var(--rule); margin:0 .2rem}
+button:focus-visible{outline:2px solid var(--sapphire); outline-offset:4px}
 
-main{margin-top:2.75rem}
-h2{font-family:var(--display); font-weight:400; font-size:2.1rem; line-height:1.1; margin:0 0 1rem}
-
-/* Ranking rows: rank, name, a long bar as the graphic, points */
-ol.roll{list-style:none; margin:0; padding:0}
-.row{
-  display:grid; grid-template-columns:3.5rem minmax(13rem, 1fr) minmax(0, 2.4fr) 5.5rem;
-  column-gap:1.5rem; align-items:center; padding:.85rem 0; border-bottom:1px solid var(--rule);
-}
-.rank{font-size:1.15rem; color:var(--muted)}
-.name{min-width:0; overflow-wrap:anywhere; line-height:1.25}
-.cls{display:block; font-family:"IM Fell English", Georgia, serif; font-style:italic; color:var(--muted); font-size:.95rem}
-.track{height:4px; background:var(--rule); position:relative}
-.bar{position:absolute; inset:0; background:var(--brass); transform-origin:left; transition:transform .6s ease}
-.pts{font-variant-numeric:oldstyle-nums tabular-nums; font-size:1.35rem; text-align:right; white-space:nowrap}
-.row.first .rank{color:var(--accent)}
-.row.first .bar{background:var(--accent)}
-.row.first .name{font-family:var(--display); font-size:1.9rem}
-
-/* By class: every class side by side */
-.columns{display:grid; grid-template-columns:repeat(auto-fit, minmax(19rem, 1fr)); gap:2.5rem 3rem}
-.columns .row{grid-template-columns:2.5rem 1fr 4.5rem; row-gap:.5rem}
-.columns .rank{grid-column:1; grid-row:1}
-.columns .name{grid-column:2; grid-row:1}
-.columns .pts{grid-column:3; grid-row:1}
-.columns .track{grid-column:2 / -1; grid-row:2; height:3px}
-.columns .row.first .name{font-size:1.45rem}
-
-.colhead{color:var(--muted); font-style:italic; font-size:1rem; text-align:right; padding-bottom:.35rem; border-bottom:1px solid var(--rule)}
+main{margin-top:2rem}
 .empty{color:var(--muted); font-style:italic; margin:0}
 
-/* Desktop: fill the whole screen; rows share the height evenly and type scales with it */
+/* Ranking rows */
+ol{list-style:none; margin:0; padding:0}
+.row{
+  display:grid; grid-template-columns:3rem minmax(12rem, 1fr) minmax(0, 2.4fr) 5.5rem;
+  column-gap:1.5rem; align-items:center; padding:.8rem 0; border-bottom:1px solid var(--rule);
+}
+.rank{color:var(--muted); font-size:1.2rem}
+.name{min-width:0; overflow-wrap:anywhere; line-height:1.2}
+.sub{display:block; font-family:"IM Fell English", Georgia, serif; font-style:italic; color:var(--muted); font-size:.95rem; margin-top:.15rem}
+.track{height:5px; background:var(--track); position:relative; border-radius:3px; overflow:hidden}
+.bar{position:absolute; inset:0; background:var(--sapphire); transform-origin:left; transition:transform .6s ease}
+.pts{font-size:1.35rem; text-align:right; white-space:nowrap}
+.row.first .rank{color:var(--topaz)}
+.row.first .bar{background:var(--topaz)}
+.row.solo .name{font-family:var(--display); font-size:1.9rem}
+.row.first .pts{color:var(--topaz)}
+.colhead{color:var(--muted); font-style:italic; font-size:1rem; text-align:right; padding-bottom:.35rem; border-bottom:1px solid var(--rule)}
+
+/* Class view: one card per team, members listed */
+.teams-grid{display:grid; grid-template-columns:repeat(var(--cols, 3), minmax(0, 1fr)); gap:1.25rem}
+.team{--c:var(--sapphire); background:var(--card); border-top:4px solid var(--c); border-radius:4px; padding:1.1rem 1.25rem 1rem; display:flex; flex-direction:column; min-height:0}
+.team-head{display:grid; grid-template-columns:auto 1fr auto; gap:.9rem; align-items:baseline}
+.team-rank{color:var(--c); font-size:1.6rem}
+.team-name{font-family:var(--display); font-weight:400; font-size:1.7rem; line-height:1.1; margin:0; overflow-wrap:anywhere}
+.team-pts{color:var(--c); font-size:1.9rem}
+.team .track{margin:.7rem 0 .8rem}
+.team .bar{background:var(--c)}
+.members{display:flex; flex-direction:column; flex:1; justify-content:space-evenly; min-height:0}
+.member{display:flex; justify-content:space-between; gap:1rem; padding:.3rem 0; border-top:1px solid var(--rule)}
+.member:first-child{border-top:0}
+.member .who{min-width:0; overflow-wrap:anywhere}
+.member .mp{color:var(--muted)}
+.member.top .mp{color:var(--text)}
+
+.readers-grid{display:grid; grid-template-columns:repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-flow:column; grid-template-rows:repeat(var(--rows, 1), auto); column-gap:3rem}
+.readers-grid .member{border-top:0; border-bottom:1px solid var(--rule); align-items:center}
+.member .rk{display:inline-block; color:var(--muted); min-width:2.4ch; margin-right:.5rem}
+
+/* Desktop: fill the whole screen; rows share the height and type scales with it */
 @media (min-width: 761px) and (min-height: 520px){
   html, body{height:100%}
-  .wrap{max-width:none; min-height:100%; display:flex; flex-direction:column; padding:3.5vh 4vw 3vh}
-  header{gap:3vw; padding-bottom:1.6vh}
-  h1{font-size:clamp(3.5rem, 9.5vh, 9rem)}
-  nav{gap:3vw}
-  nav button{font-size:clamp(1.3rem, 2.7vh, 2.3rem)}
-  main{flex:1; min-height:0; margin-top:3.5vh; display:flex; flex-direction:column}
-  main > ol.roll{flex:1}
-  ol.roll{display:grid; grid-template-rows:repeat(var(--n, 1), minmax(3.25rem, 1fr))}
-  .row{padding:0; column-gap:2vw; grid-template-columns:5vw minmax(16rem, 1.1fr) minmax(0, 2.6fr) 8vw}
-  .rank{font-size:clamp(1.15rem, 2.7vh, 2.3rem)}
+  .wrap{min-height:100%; display:flex; flex-direction:column; padding:3vh 3.5vw 3vh}
+  header{padding-bottom:1.5vh}
+  h1{font-size:clamp(3.5rem, 9vh, 8.5rem)}
+  nav button{font-size:clamp(1.15rem, 2.3vh, 2rem)}
+  nav{column-gap:2vw}
+  main{flex:1; min-height:0; margin-top:3vh; display:flex; flex-direction:column}
+  main > ol:not(.readers-grid){flex:1; display:grid; grid-template-rows:repeat(var(--n, 1), minmax(3.25rem, 1fr))}
+  .row{padding:0; column-gap:2vw; grid-template-columns:4.5vw minmax(16rem, 1.1fr) minmax(0, 2.6fr) 8vw}
+  .rank{font-size:clamp(1.2rem, 3vh, 2.6rem)}
   .name{font-size:clamp(1.2rem, 3vh, 2.7rem)}
-  .cls{font-size:clamp(.95rem, 1.9vh, 1.6rem); margin-top:.2vh}
+  .sub{font-size:clamp(.95rem, 1.9vh, 1.6rem)}
   .pts{font-size:clamp(1.35rem, 3.6vh, 3.2rem)}
-  .track{height:clamp(4px, 1vh, 12px)}
-  .row.first .name{font-size:clamp(1.9rem, 5vh, 4.5rem)}
+  .track{height:clamp(5px, 1.1vh, 14px); border-radius:99px}
+  .row.solo .name{font-size:clamp(1.9rem, 5vh, 4.5rem)}
   .colhead{font-size:clamp(1rem, 2vh, 1.7rem); padding-bottom:.8vh}
 
-  .columns{flex:1; min-height:0; gap:3vh 4vw; grid-template-columns:repeat(var(--cols, 2), minmax(0, 1fr))}
-  .columns section{display:flex; flex-direction:column; min-height:0}
-  .columns h2{font-size:clamp(2rem, 4.8vh, 4rem); margin-bottom:1.5vh}
-  .columns ol.roll{flex:1}
-  .columns .row{grid-template-columns:3.5vw 1fr 6vw; align-content:center; row-gap:1vh}
-  .columns .track{height:clamp(3px, .8vh, 10px)}
-  .columns .row.first .name{font-size:clamp(1.45rem, 3.6vh, 3.2rem)}
-}
+  .teams-grid{flex:1; min-height:0; gap:2.2vh 1.6vw; grid-template-rows:repeat(var(--rows, 1), minmax(0, 1fr))}
+  .team{padding:2vh 1.5vw 1.6vh}
+  .team-rank{font-size:clamp(1.4rem, 3.4vh, 3rem)}
+  .team-name{font-size:clamp(1.5rem, 3.6vh, 3.4rem)}
+  .team-pts{font-size:clamp(1.6rem, 4vh, 3.6rem)}
+  .team .track{margin:1.2vh 0 1.2vh; height:clamp(4px, .9vh, 12px)}
+  .member{font-size:clamp(1rem, 2.2vh, 2rem); padding:.25vh 0}
 
-/* Smaller screens still work */
+  .readers-grid{flex:1; grid-template-rows:repeat(var(--rows, 1), minmax(0, 1fr)); column-gap:4vw}
+  .readers-grid .member{font-size:clamp(1rem, 2.6vh, 2.2rem); padding:0}
+}
 @media (max-width: 760px){
-  .wrap{padding:2rem 1.25rem 4rem}
-  header{flex-direction:column; align-items:flex-start; gap:1.25rem}
-  nav{gap:1.5rem; flex-wrap:wrap}
-  nav button{font-size:1.1rem}
-  .row{grid-template-columns:2.5rem 1fr auto; row-gap:.5rem}
+  header{flex-direction:column; align-items:flex-start}
+  nav{justify-content:flex-start; gap:.4rem 1.25rem}
+  nav button{font-size:1.05rem}
+  .row{grid-template-columns:2.2rem 1fr auto; row-gap:.5rem}
   .row .rank{grid-column:1; grid-row:1}
   .row .name{grid-column:2; grid-row:1}
   .row .pts{grid-column:3; grid-row:1}
   .row .track{grid-column:2 / -1; grid-row:2}
-  .row.first .name{font-size:1.5rem}
+  .row.solo .name{font-size:1.5rem}
+  .teams-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion: reduce){ .bar{transition:none} }
 </style>
@@ -143,11 +140,7 @@ ol.roll{list-style:none; margin:0; padding:0}
 <div class="wrap">
   <header>
     <h1 class="display">Book Brawl</h1>
-    <nav role="tablist" aria-label="Rankings">
-      <button role="tab" data-view="teams" aria-selected="true">All teams</button>
-      <button role="tab" data-view="classes" aria-selected="false">Classes</button>
-      <button role="tab" data-view="by-class" aria-selected="false">By class</button>
-    </nav>
+    <nav role="tablist" aria-label="Rankings"></nav>
   </header>
   <main id="board" role="tabpanel"><p class="empty">Opening the ledger…</p></main>
 </div>
@@ -156,102 +149,164 @@ ol.roll{list-style:none; margin:0; padding:0}
 const API_URL = "https://script.google.com/macros/s/AKfycbxKuI0yYHNqzq0qeE10dsX8ZgrUPPT8JSd6blBFYJ3CzStefBmMoa1uJ7IRzzPhFxgy/exec";
 
 (() => {
-  const VIEWS = ["teams", "classes", "by-class"];
+  const JEWELS = ["var(--emerald)", "var(--sapphire)", "var(--ruby)", "var(--amethyst)", "var(--aqua)", "var(--topaz)"];
+  const READER_LIMIT = 10;
   const $ = (s) => document.querySelector(s);
   const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
   const fmt = (n) => String(Math.round(n * 100) / 100);
   const classLabel = (p) => /^\d/.test(p) ? p + " Period" : p;
   const classOrder = (a, b) => (parseInt(a) || 99) - (parseInt(b) || 99) || a.localeCompare(b);
-  const roman = (n) => { if (n >= 40) return String(n); const m = [[10,"X"],[9,"IX"],[5,"V"],[4,"IV"],[1,"I"]]; let s = ""; for (const [v, r] of m) while (n >= v) { s += r; n -= v; } return s; };
+  const classView = (c) => "class-" + c.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-  let standings = null, lastJson = "";
-  let view = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "teams";
+  let data = null, lastJson = "";
+  let view = location.hash.slice(1) || "teams";
+  let views = [];
 
-  function rankRows(items, key) {
+  function ranked(items, key) {
     const sorted = [...items].sort((a, b) => b[key] - a[key] || a.name.localeCompare(b.name));
     let rank = 0, prev = null;
     return sorted.map((it, i) => { if (it[key] !== prev) { rank = i + 1; prev = it[key]; } return { ...it, rank }; });
   }
 
   function roll(items, key, sub) {
-    const ol = el("ol", "roll");
+    const ol = el("ol");
     ol.style.setProperty("--n", Math.max(items.length, 1));
     const max = Math.max(...items.map((i) => i[key]), 0);
-    for (const it of rankRows(items, key)) {
-      const li = el("li", "row" + (it.rank === 1 && it[key] > 0 ? " first" : ""));
+    const rows = ranked(items, key);
+    const leaders = rows.filter((r) => r.rank === 1 && r[key] > 0).length;
+    for (const it of rows) {
+      const lead = it.rank === 1 && it[key] > 0;
+      const li = el("li", "row" + (lead ? " first" : "") + (lead && leaders === 1 ? " solo" : ""));
       const nm = el("span", "name", it.name);
-      const s = sub && sub(it); if (s) nm.append(el("span", "cls", s));
+      const s = sub && sub(it); if (s) nm.append(el("span", "sub", s));
       const track = el("span", "track"); const bar = el("span", "bar");
       bar.style.transform = "scaleX(" + (max > 0 ? it[key] / max : 0) + ")";
       track.append(bar);
-      const p = el("span", "pts", fmt(it[key])); p.setAttribute("aria-label", fmt(it[key]) + " points");
-      li.append(el("span", "rank sc", roman(it.rank)), nm, track, p);
+      const p = el("span", "pts num", fmt(it[key])); p.setAttribute("aria-label", fmt(it[key]) + " points");
+      li.append(el("span", "rank num", String(it.rank)), nm, track, p);
       ol.append(li);
     }
     return ol;
   }
 
+  function memberRows(list, withRank) {
+    const best = Math.max(...list.map((r) => r.points), 0);
+    return ranked(list, "points").map((r) => {
+      const li = el("li", "member" + (best > 0 && r.points === best ? " top" : ""));
+      const who = el("span", "who");
+      if (withRank) who.append(el("span", "rk num", String(r.rank)));
+      who.append(document.createTextNode(r.name));
+      li.append(who, el("span", "mp num", fmt(r.points)));
+      return li;
+    });
+  }
+
+  function classes() { return (data?.classes || []).map((c) => c.name).sort(classOrder); }
+
+  function buildNav() {
+    const nav = $("nav");
+    const cls = classes();
+    views = ["teams", "classes", "readers", ...cls.map(classView)];
+    if (!views.includes(view)) view = "teams";
+    const items = [["teams", "All teams"], ["classes", "Classes"], ["readers", "Readers"], null, ...cls.map((c) => [classView(c), classLabel(c)])];
+    nav.replaceChildren(...items.map((it) => {
+      if (!it) { const s = el("span", "sep"); s.setAttribute("aria-hidden", "true"); return s; }
+      const b = el("button", null, it[1]);
+      b.setAttribute("role", "tab"); b.dataset.view = it[0];
+      b.onclick = () => go(it[0]);
+      b.onkeydown = (e) => {
+        if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+        const i = views.indexOf(view) + (e.key === "ArrowRight" ? 1 : -1);
+        go(views[(i + views.length) % views.length]);
+        $(`nav [data-view="${view}"]`)?.focus();
+      };
+      return b;
+    }));
+  }
+
+  function go(v) { view = v; history.replaceState(null, "", "#" + v); render(); }
+
   function render() {
     document.querySelectorAll("nav button").forEach((b) => b.setAttribute("aria-selected", String(b.dataset.view === view)));
     const main = $("#board");
     main.replaceChildren();
-    if (!standings) return;
-    const teams = standings.teams || [], classes = standings.classes || [];
+    if (!data) return;
+    const teams = data.teams || [], readers = data.readers || [];
 
     if (view === "teams") {
       if (!teams.length) return main.append(el("p", "empty", "No teams yet."));
       main.append(roll(teams, "points", (t) => classLabel(t.cls)));
+      return;
     }
-
     if (view === "classes") {
-      if (!classes.length) return main.append(el("p", "empty", "No classes yet."));
       main.append(el("div", "colhead", "Pts/person"));
-      main.append(roll(classes.map((c) => ({ ...c, name: classLabel(c.name) })), "avg"));
+      main.append(roll((data.classes || []).map((c) => ({ ...c, name: classLabel(c.name) })), "avg"));
+      return;
+    }
+    if (view === "readers") {
+      const top = ranked(readers.filter((r) => r.points > 0), "points").slice(0, READER_LIMIT);
+      if (!top.length) return main.append(el("p", "empty", "No books scored yet."));
+      main.append(roll(top, "points", (r) => [classLabel(r.cls), r.team].filter(Boolean).join(", ")));
+      return;
     }
 
-    if (view === "by-class") {
-      const withTeams = [...new Set(teams.map((t) => t.cls))].sort(classOrder);
-      if (!withTeams.length) return main.append(el("p", "empty", "No teams yet."));
-      const grid = el("div", "columns");
-      grid.style.setProperty("--cols", Math.min(withTeams.length, 4));
-      const most = Math.max(...withTeams.map((c) => teams.filter((t) => t.cls === c).length));
-      for (const c of withTeams) {
-        const col = el("section");
-        const list = roll(teams.filter((t) => t.cls === c), "points");
-        list.style.setProperty("--n", most);
-        col.append(el("h2", null, classLabel(c)), list);
-        grid.append(col);
-      }
-      main.append(grid);
+    // A single class
+    const cls = classes().find((c) => classView(c) === view);
+    if (!cls) return;
+    const classTeams = ranked(teams.filter((t) => t.cls === cls), "points");
+    const classReaders = readers.filter((r) => r.cls === cls);
+
+    if (!classTeams.length) {
+      if (!classReaders.length) return main.append(el("p", "empty", "No readers yet."));
+      const box = el("ol", "readers-grid");
+      const cols = classReaders.length > 20 ? 3 : 2;
+      box.style.setProperty("--cols", cols);
+      box.style.setProperty("--rows", Math.ceil(classReaders.length / cols));
+      box.append(...memberRows(classReaders, true));
+      main.append(box);
+      return;
     }
+
+    const n = classTeams.length;
+    const cols = n <= 4 ? n : Math.min(4, Math.ceil(n / 2));
+    const grid = el("div", "teams-grid");
+    grid.style.setProperty("--cols", cols);
+    grid.style.setProperty("--rows", Math.ceil(n / cols));
+    const max = Math.max(...classTeams.map((t) => t.points), 0);
+    classTeams.forEach((t, i) => {
+      const card = el("section", "team");
+      card.style.setProperty("--c", t.rank === 1 && t.points > 0 ? "var(--topaz)" : JEWELS[i % (JEWELS.length - 1)]);
+      const head = el("div", "team-head");
+      head.append(el("span", "team-rank num", String(t.rank)), el("h2", "team-name", t.name), el("span", "team-pts num", fmt(t.points)));
+      const track = el("div", "track"); const bar = el("span", "bar");
+      bar.style.transform = "scaleX(" + (max > 0 ? t.points / max : 0) + ")";
+      track.append(bar);
+      const list = el("ol", "members");
+      list.append(...memberRows(classReaders.filter((r) => r.team === t.name)));
+      card.append(head, track, list);
+      grid.append(card);
+    });
+    main.append(grid);
   }
 
-  document.querySelectorAll("nav button").forEach((b) => {
-    b.addEventListener("click", () => { view = b.dataset.view; history.replaceState(null, "", "#" + view); render(); });
-    b.addEventListener("keydown", (e) => {
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
-      const i = VIEWS.indexOf(view) + (e.key === "ArrowRight" ? 1 : -1);
-      view = VIEWS[(i + VIEWS.length) % VIEWS.length];
-      history.replaceState(null, "", "#" + view); render();
-      document.querySelector(`nav [data-view="${view}"]`).focus();
-    });
-  });
-  window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (VIEWS.includes(h)) { view = h; render(); } });
+  window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (views.includes(h) && h !== view) { view = h; render(); } });
 
   async function load() {
     try {
       const r = await fetch(API_URL, { cache: "no-store" });
       if (!r.ok) throw new Error(r.status);
-      const data = await r.json();
-      const json = JSON.stringify({ c: data.classes, t: data.teams });
+      const next = await r.json();
+      const json = JSON.stringify({ c: next.classes, t: next.teams, r: next.readers });
       if (json === lastJson) return;
-      lastJson = json; standings = data; render();
+      const navChanged = !data || JSON.stringify(classes()) !== JSON.stringify((next.classes || []).map((c) => c.name).sort(classOrder));
+      lastJson = json; data = next;
+      if (navChanged) buildNav();
+      render();
     } catch {
-      if (!standings) $("#board").replaceChildren(el("p", "empty", "The standings can’t be reached right now. Try again in a minute."));
+      if (!data) $("#board").replaceChildren(el("p", "empty", "The standings can’t be reached right now. Try again in a minute."));
     }
   }
 
-  render();
   load();
   setInterval(() => { if (!document.hidden) load(); }, 60000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) load(); });
