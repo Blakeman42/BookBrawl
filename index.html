@@ -65,27 +65,18 @@ ol{list-style:none; margin:0; padding:0}
 .track{height:5px; background:var(--track); position:relative; border-radius:3px; overflow:hidden}
 .bar{position:absolute; inset:0; background:var(--sapphire); transform-origin:left; transition:transform .6s ease}
 .pts{font-size:1.35rem; text-align:right; white-space:nowrap}
+.row[style*="--c"] .bar{background:var(--c)}
+.roster{display:flex; flex-wrap:wrap; gap:.1rem 1.4rem; margin-top:.35rem; font-family:"IM Fell English", Georgia, serif; font-size:1rem; color:var(--text)}
+.roster .mp{color:var(--muted)}
 .row.first .rank{color:var(--topaz)}
 .row.first .bar{background:var(--topaz)}
 .row.solo .name{font-family:var(--display); font-size:1.9rem}
 .row.first .pts{color:var(--topaz)}
 .colhead{color:var(--muted); font-style:italic; font-size:1rem; text-align:right; padding-bottom:.35rem; border-bottom:1px solid var(--rule)}
 
-/* Class view: one card per team, members listed */
-.teams-grid{display:grid; grid-template-columns:repeat(var(--cols, 3), minmax(0, 1fr)); gap:1.25rem}
-.team{--c:var(--sapphire); background:var(--card); border-top:4px solid var(--c); border-radius:4px; padding:1.1rem 1.25rem 1rem; display:flex; flex-direction:column; min-height:0}
-.team-head{display:grid; grid-template-columns:auto 1fr auto; gap:.9rem; align-items:baseline}
-.team-rank{color:var(--c); font-size:1.6rem}
-.team-name{font-family:var(--display); font-weight:400; font-size:1.7rem; line-height:1.1; margin:0; overflow-wrap:anywhere}
-.team-pts{color:var(--c); font-size:1.9rem}
-.team .track{margin:.7rem 0 .8rem}
-.team .bar{background:var(--c)}
-.members{display:flex; flex-direction:column; flex:1; justify-content:space-evenly; min-height:0}
 .member{display:flex; justify-content:space-between; gap:1rem; padding:.3rem 0; border-top:1px solid var(--rule)}
-.member:first-child{border-top:0}
 .member .who{min-width:0; overflow-wrap:anywhere}
 .member .mp{color:var(--muted)}
-.member.top .mp{color:var(--text)}
 
 .readers-grid{display:grid; grid-template-columns:repeat(var(--cols, 2), minmax(0, 1fr)); grid-auto-flow:column; grid-template-rows:repeat(var(--rows, 1), auto); column-gap:3rem}
 .readers-grid .member{border-top:0; border-bottom:1px solid var(--rule); align-items:center}
@@ -109,13 +100,9 @@ ol{list-style:none; margin:0; padding:0}
   .track{height:clamp(5px, 1.1vh, 14px); border-radius:99px}
   .row.solo .name{font-size:clamp(1.9rem, 5vh, 4.5rem)}
   .colhead{font-size:clamp(1rem, 2vh, 1.7rem); padding-bottom:.8vh}
+  .roster{font-size:clamp(.95rem, 2vh, 1.7rem); column-gap:1.6vw; margin-top:.6vh}
+  .wide .row{grid-template-columns:4.5vw minmax(20rem, 2.2fr) minmax(0, 1.5fr) 8vw}
 
-  .teams-grid{flex:1; min-height:0; gap:2.2vh 1.6vw; grid-template-rows:repeat(var(--rows, 1), minmax(0, 1fr))}
-  .team{padding:2vh 1.5vw 1.6vh}
-  .team-rank{font-size:clamp(1.4rem, 3.4vh, 3rem)}
-  .team-name{font-size:clamp(1.5rem, 3.6vh, 3.4rem)}
-  .team-pts{font-size:clamp(1.6rem, 4vh, 3.6rem)}
-  .team .track{margin:1.2vh 0 1.2vh; height:clamp(4px, .9vh, 12px)}
   .member{font-size:clamp(1rem, 2.2vh, 2rem); padding:.25vh 0}
 
   .readers-grid{flex:1; grid-template-rows:repeat(var(--rows, 1), minmax(0, 1fr)); column-gap:4vw}
@@ -131,7 +118,6 @@ ol{list-style:none; margin:0; padding:0}
   .row .pts{grid-column:3; grid-row:1}
   .row .track{grid-column:2 / -1; grid-row:2}
   .row.solo .name{font-size:1.5rem}
-  .teams-grid{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion: reduce){ .bar{transition:none} }
 </style>
@@ -178,9 +164,10 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxKuI0yYHNqzq0qeE10dsX8
       const lead = it.rank === 1 && it[key] > 0;
       const li = el("li", "row" + (lead ? " first" : "") + (lead && leaders === 1 ? " solo" : ""));
       const nm = el("span", "name", it.name);
-      const s = sub && sub(it); if (s) nm.append(el("span", "sub", s));
+      const s = sub && sub(it); if (s) nm.append(typeof s === "string" ? el("span", "sub", s) : s);
       const track = el("span", "track"); const bar = el("span", "bar");
       bar.style.transform = "scaleX(" + (max > 0 ? it[key] / max : 0) + ")";
+      if (it.color && !lead) li.style.setProperty("--c", it.color);
       track.append(bar);
       const p = el("span", "pts num", fmt(it[key])); p.setAttribute("aria-label", fmt(it[key]) + " points");
       li.append(el("span", "rank num", String(it.rank)), nm, track, p);
@@ -244,6 +231,7 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxKuI0yYHNqzq0qeE10dsX8
       return;
     }
     if (view === "readers") {
+      if (!data.readers) return main.append(el("p", "empty", "Reader rankings aren’t available yet."));
       const top = ranked(readers.filter((r) => r.points > 0), "points").slice(0, READER_LIMIT);
       if (!top.length) return main.append(el("p", "empty", "No books scored yet."));
       main.append(roll(top, "points", (r) => [classLabel(r.cls), r.team].filter(Boolean).join(", ")));
@@ -267,26 +255,18 @@ const API_URL = "https://script.google.com/macros/s/AKfycbxKuI0yYHNqzq0qeE10dsX8
       return;
     }
 
-    const n = classTeams.length;
-    const cols = n <= 4 ? n : Math.min(4, Math.ceil(n / 2));
-    const grid = el("div", "teams-grid");
-    grid.style.setProperty("--cols", cols);
-    grid.style.setProperty("--rows", Math.ceil(n / cols));
-    const max = Math.max(...classTeams.map((t) => t.points), 0);
-    classTeams.forEach((t, i) => {
-      const card = el("section", "team");
-      card.style.setProperty("--c", t.rank === 1 && t.points > 0 ? "var(--topaz)" : JEWELS[i % (JEWELS.length - 1)]);
-      const head = el("div", "team-head");
-      head.append(el("span", "team-rank num", String(t.rank)), el("h2", "team-name", t.name), el("span", "team-pts num", fmt(t.points)));
-      const track = el("div", "track"); const bar = el("span", "bar");
-      bar.style.transform = "scaleX(" + (max > 0 ? t.points / max : 0) + ")";
-      track.append(bar);
-      const list = el("ol", "members");
-      list.append(...memberRows(classReaders.filter((r) => r.team === t.name)));
-      card.append(head, track, list);
-      grid.append(card);
+    const colored = classTeams.map((t, i) => ({ ...t, color: JEWELS[i % (JEWELS.length - 1)] }));
+    const list = roll(colored, "points", (t) => {
+      const line = el("span", "roster");
+      for (const r of ranked(classReaders.filter((m) => m.team === t.name), "points")) {
+        const m = el("span", "mem");
+        m.append(document.createTextNode(r.name + " "), el("span", "mp num", fmt(r.points)));
+        line.append(m);
+      }
+      return line;
     });
-    main.append(grid);
+    list.classList.add("wide");
+    main.append(list);
   }
 
   window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (views.includes(h) && h !== view) { view = h; render(); } });
